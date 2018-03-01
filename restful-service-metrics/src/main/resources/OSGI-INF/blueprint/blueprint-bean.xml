@@ -55,7 +55,7 @@
     <bean
             class="org.apache.camel.component.metrics.routepolicy.MetricsRoutePolicyFactory" id="metricsRoutePolicy">
         <property name="useJmx" value="true"/>
-        <property name="jmxDomain" value="org.jeannyil.fuse.cxfrs.swaggerv2.metrics"/>
+        <property name="jmxDomain" value="org.jeannyil.fuse.cxfrs.metrics"/>
         <property name="prettyPrint" value="true"/>
     </bean>
     <!-- Routes -->
