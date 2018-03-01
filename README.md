@@ -1,6 +1,6 @@
-# Red Hat Fuse 7 Technical Preview :: RESTful services using the Apache Camel CXFRS component
+# Red Hat Fuse 7 Standalone on Apache Karaf Technical Preview :: RESTful services using the Apache Camel CXFRS component
 
-This repository contains **Red Hat Fuse 7 TP3 (Technical Preview)** 
+This repository contains **Red Hat Fuse 7 Standalone on Apache Karaf TP3 (Technical Preview)** 
 projects that implement swaggerv2-compliant RESTful 
 services using the Apache Camel CXFRS component.
 
