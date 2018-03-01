@@ -85,7 +85,7 @@
                 <property name="host" value="${exposed.service.gateway.host}:${exposed.service.gateway.port}"/>
                 <property name="basePath" value="/cxf/rest2"/>
                 <property name="usePathBasedConfig" value="true" />
-                <property name="title" value="RESTful service (swagger v2.0) : usage of the camel-metrics on service requests"/>
+                <property name="title" value="RESTful Service Metrics (swagger v2.0) :: Usage of the camel-metrics on service requests"/>
                 <property name="description" value="Returns a randomly generated numbers list according to input count and range parameters"/>
                 <property name="version" value="${project.version}"/>
                 <property name="contact" value="jean.nyilimbibi@redhat.com"/>

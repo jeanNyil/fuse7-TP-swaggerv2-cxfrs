@@ -88,8 +88,8 @@
                 <property name="host" value="${exposed.service.gateway.host}:${exposed.service.gateway.port}"/>
                 <property name="basePath" value="/cxf/rest1"/>
                 <property name="usePathBasedConfig" value="true" />
-                <property name="title" value="RESTful IP/Hostname Service DEMO"/>
-                <property name="description" value="Camel CXFRS Demo :: A Red Hat JBoss Fuse 6.3.0 RESTful service that handles operations on an IP address or a hostname"/>
+                <property name="title" value="RESTful Service (swagger v2.0) :: IP GeoLocation Service"/>
+                <property name="description" value="Leverages the FreeGeoIP RESTful service in order to get the geo-location of an IP address or a hostname"/>
                 <property name="version" value="${project.version}"/>
                 <property name="contact" value="jean.nyilimbibi@redhat.com"/>
                 <property name="prettyPrint" value="true"/>
