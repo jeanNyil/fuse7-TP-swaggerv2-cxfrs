@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jeannyil.fuse</groupId>
+		<artifactId>fuse7-TP-swaggerv2-cxfrs</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+  	</parent>
+	
+	<artifactId>restful-ipservice</artifactId>
+	<groupId>org.jeannyil.fuse.cxfrs.ipservice</groupId>
+	<packaging>bundle</packaging>
+	<name>RESTful Service (swagger v2.0) :: IP GeoLocation Service</name>
+	<description>Leverages the FreeGeoIP RESTful service in order to get the geo-location of an IP address or a hostname</description>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<distribution>repo</distribution>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+
+        <!-- Plugins -->
+        <plugins>
+            <!-- Attach the generated features file as an artifact,
+                 and publish to the maven repository -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-artifacts</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>attach-artifact</goal>
+                        </goals>
+                        <configuration>
+                            <artifacts>
+                                <artifact>
+                                    <file>target/classes/features.xml</file>
+                                    <type>xml</type>
+                                    <classifier>features</classifier>
+                                </artifact>
+                            </artifacts>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to generate the service WADL -->
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-java2wadl-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>parsejavadoc</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>parsejavadoc</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>process-classes</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>java2wadl</goal>
+                        </goals>
+                        <configuration>
+                            <classResourceNames>
+                                <classResourceName>org.jeannyil.fuse.cxfrs.ipservice.resource.IpService</classResourceName>
+                            </classResourceNames>
+                            <docProvider>org.apache.cxf.maven_plugin.javatowadl.ResourceMapJavaDocProvider</docProvider>
+                            <attachWadl>false</attachWadl>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to generate the service swagger v2 spec -->
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-java2swagger-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>process-classes</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>java2swagger</goal>
+                        </goals>
+                        <configuration>
+                            <resourcePackages>
+                                <resourcePackage>org.jeannyil.fuse.cxfrs.ipservice.resource</resourcePackage>
+                            </resourcePackages>
+                            <attachSwagger>false</attachSwagger>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

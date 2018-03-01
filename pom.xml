@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jeannyil.fuse</groupId>
+    <artifactId>fuse7-TP-swaggerv2-cxfrs</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Red Hat Fuse 7 Technical Preview :: RESTful services using the Apache Camel CXFRS component</name>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <distribution>repo</distribution>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+    <properties>
+        <!-- maven/fuse/camel resources properties -->
+        <build-helper-maven-plugin-version>3.0.0</build-helper-maven-plugin-version>
+        <maven-bundle-plugin.version>3.3.0</maven-bundle-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
+        <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <!-- Red Hat Fuse BOM and subprojects versions -->
+        <jboss.fuse.bom.version>7.0.0.fuse-000145-redhat-1</jboss.fuse.bom.version>
+        <camel.version>2.21.0.000033-fuse-000001-redhat-1</camel.version>
+        <cxf.version>3.1.11.000176-fuse-000001-redhat-2</cxf.version>
+    </properties>
+
+    <!-- Fuse BOM to import all non-plugin dependencies -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.fuse</groupId>
+                <artifactId>jboss-fuse-parent</artifactId>
+                <version>${jboss.fuse.bom.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <!-- Private NEXUS OSS repository -->
+        <repository>
+            <id>nexus</id>
+            <name>Nexus OSS Repository Manager</name>
+            <url>http://data-server.lab.com:8081/repository/maven-redhat-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Used for camel blueprint and components -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-blueprint</artifactId>
+        </dependency>
+        <!--  used for camel CXFRS -->
+        <!-- <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-all</artifactId>
+        </dependency> -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-cxf</artifactId>
+        </dependency>
+        <!-- Used for camel-jackson component -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jackson</artifactId>
+        </dependency>
+        <!--  Used for swagger -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+            <optional>true</optional>
+            <exclusions>
+                <!-- avoid this old dependency which breaks CXF -->
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+        </dependency>
+        <!--  Used with org.apache.cxf.jaxrs.swagger.Swagger2Feature bean -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-service-description-swagger</artifactId>
+        </dependency>
+        <!-- Used for logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!-- Used for tests Logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Used for to avoid OSGI container error when running with camel:run maven goal
+             See https://access.redhat.com/solutions/499763 -->
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.compendium</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+
+        <!-- Resources -->
+        <resources>
+            <resource>
+                <directory>src/main/fabric8</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+
+        <pluginManagement>
+            <plugins>
+                <!-- Core plugins -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>${maven-deploy-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>${maven-resources-plugin.version}</version>
+                </plugin>
+
+                <!-- CXF plugins -->
+                <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-java2wadl-plugin</artifactId>
+                    <version>${cxf.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>cxf-java2swagger-plugin</artifactId>
+                    <version>${cxf.version}</version>
+                </plugin>
+
+                <!-- Felix plugins -->
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${maven-bundle-plugin.version}</version>
+                    <extensions>true</extensions>
+                </plugin>
+
+                <!-- MojoHaus plugins -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>${build-helper-maven-plugin-version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <!-- Plugins -->
+        <plugins>
+            <!-- Core plugins -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- Used to generate the MANIFEST-FILE of the bundle -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <inherited>true</inherited>
+                <extensions>true</extensions>
+                <configuration>
+                    <obrRepository>NONE</obrRepository>
+                    <instructions>
+                        <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                        <Private-Package>org.jeannyil.fuse.*</Private-Package>
+                        <Import-Package>
+                            javax.ws.rs,
+                            javax.ws.rs.core,
+                            javax.ws.rs.container,
+                            org.osgi.service.blueprint,
+                            org.apache.cxf.jaxrs.provider,
+                            org.apache.cxf.jaxrs.swagger,
+                            io.swagger.jaxrs.config,
+                            io.swagger.jaxrs.listing,
+                            io.swagger.annotations,
+                            com.fasterxml.jackson.annotation,
+                            com.fasterxml.jackson.core,
+                            com.fasterxml.jackson.databind,
+                            com.fasterxml.jackson.jaxrs.json,
+                            javax.annotation;version="[1.1.0,2.0.0)",
+                            javax.ws.rs.ext,
+                            *
+                        </Import-Package>
+                        <Import-Service>
+                            org.apache.aries.blueprint.NamespaceHandler;
+                            osgi.service.blueprint.namespace=http://cxf.apache.org/transports/http/configuration
+                        </Import-Service>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <!-- Used to deploy artifacts to private NEXUS OSS Repository Manager -->
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>${maven-deploy-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-deploy</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Used to run camel blueprint contexts using the camel:run maven goal -->
+            <plugin>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-maven-plugin</artifactId>
+                <version>${camel.version}</version>
+                <configuration>
+                    <useBlueprint>true</useBlueprint>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Modules -->
+    <modules>
+        <module>restful-ipservice</module>
+        <module>restful-service-metrics</module>
+    </modules>
+
+    <!-- Configuration of maven artifacts distribution to private NEXUS OSS repository -->
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>Releases</name>
+            <url>http://data-server.lab.com:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>Snapshots</name>
+            <url>http://data-server.lab.com:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
+
