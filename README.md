@@ -27,3 +27,14 @@ to be adjusted according to your environment for a consistent swagger 2.0 spec g
 ## :construction: TODO:
 - *[restful-ipservice README](restful-ipservice)  with build/deployment instructions*
 - *[restful-service-metrics README](restful-service-metrics) with build/deployment instructions*
+
+## Screenshot samples
+
+### Requesting the swagger 2.0 spec 
+![swagger 2.0 spec in YAML format](images/Swagger2_0.png)
+
+### GET requests
+![GET requests](images/TestRESTfulServices.png)
+
+### Metrics in JConsole and Fuse 7 Apache Karaf 4 console
+![Metrics](images/JConsole_and_ApacheKaraf4console.png)
