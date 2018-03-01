@@ -19,7 +19,7 @@ and running
 
 ## Deploy the restful-ipservice bundle
 
-1. Log into the Fuse 7 Standalone Apache Karaf console
+1. Log into the _Red Hat Fuse 7 Standalone Apache Karaf_ console
 2. Enter the following command lines to deploy the **[restful-ipservice](../restful-ipservice)** bundle
 ```
 feature:repo-add mvn:org.jeannyil.fuse.cxfrs.ipservice/restful-ipservice/1.0.0-SNAPSHOT/xml/features
@@ -29,10 +29,10 @@ feature:install restful-ipservice
 ## Test the restful-ipservice
 
 ### Assumptions
-- My Fuse 7 Standalone on Apache Karaf has the following run-time configuration:
+- My _Red Hat Fuse 7 Standalone on Apache Karaf_ has the following run-time configuration:
   - host: ```fuse-standalone.lab.com```
   - [undertow](http://undertow.io/) listening port: ```8181```
-- Thus, the ```org.jeannyil.fuse.restful-ipservice.cfg```*PID* is configured as follows:
+- Thus, the ```org.jeannyil.fuse.restful-ipservice.cfg``` *PID* is configured as follows:
 ```
 camel.name.route=restful-ipservice-route
 exposed.service.gateway.host=fuse-standalone.lab.com
