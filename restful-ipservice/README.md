@@ -148,17 +148,17 @@ type: json
 
 ```
 $ http 'http://fuse-standalone.lab.com:8181/cxf/rest1/ipservice/geolocation?ip=redhat.com&type=csv'
-HTTP/1.1 200 OK
+HTTP/1.1 400 Bad Request
 Accept: */*
 Content-Length: 224
 Content-Type: application/json
-Date: Thu, 01 Mar 2018 23:02:49 GMT
+Date: Fri, 02 Mar 2018 22:16:01 GMT
 Host: fuse-standalone.lab.com:8181
 Server: Pax-HTTP-Undertow
 User-Agent: HTTPie/0.9.9
 X-Powered-By: Open Source
 accept-encoding: gzip, deflate
-breadcrumbId: ID-data-server-lab-com-1519943596694-1-4
+breadcrumbId: ID-data-server-lab-com-1520028884682-2-1
 connection: keep-alive
 ip: redhat.com
 type: csv

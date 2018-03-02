@@ -155,18 +155,18 @@ range: 31031980
 ### Check error response
 
 ```
-$ http 'http://fuse-standalone.lab.com:8181/cxf/rest2/restfulservice/generatenumbers?count=3'
-HTTP/1.1 200 OK
+http 'http://fuse-standalone.lab.com:8181/cxf/rest2/restfulservice/generatenumbers?count=3'
+HTTP/1.1 400 Bad Request
 Accept: */*
 Content-Length: 82
 Content-Type: application/json
-Date: Thu, 01 Mar 2018 23:15:14 GMT
+Date: Fri, 02 Mar 2018 22:18:18 GMT
 Host: fuse-standalone.lab.com:8181
 Server: Pax-HTTP-Undertow
 User-Agent: HTTPie/0.9.9
 X-Powered-By: Open Source
 accept-encoding: gzip, deflate
-breadcrumbId: ID-data-server-lab-com-1519943596694-2-3
+breadcrumbId: ID-data-server-lab-com-1520028884682-1-3
 connection: keep-alive
 count: 3
 range: 0
