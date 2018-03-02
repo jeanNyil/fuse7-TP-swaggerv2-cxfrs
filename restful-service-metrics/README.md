@@ -113,7 +113,7 @@ paths:
           description: "Internal server error"
 ```
 
-### Request with count=3 and range=31031980
+### Request with *count=3* and *range=31031980*
 
 ```
 $ http 'http://fuse-standalone.lab.com:8181/cxf/rest2/restfulservice/generatenumbers?count=3&range=31031980'
