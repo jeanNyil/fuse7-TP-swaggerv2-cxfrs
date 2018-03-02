@@ -20,7 +20,7 @@ and running
 ## Deploy the restful-service-metrics bundle
 
 1. Log into the _Red Hat Fuse 7 Standalone Apache Karaf_ console
-2. Enter the following command lines to deploy the **[restful-service-metrics](../restful-service-metrics)** bundle
+2. Enter the following command lines to deploy the **[restful-service-metrics](../restful-service-metrics/src/main/resources/features.xml)** feature
 ```
 feature:repo-add mvn:org.jeannyil.fuse.cxfrs.metrics/restful-service-metrics/1.0.0-SNAPSHOT/xml/features
 feature:install restful-service-metrics

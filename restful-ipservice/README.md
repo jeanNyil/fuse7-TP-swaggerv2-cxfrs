@@ -20,7 +20,7 @@ and running
 ## Deploy the restful-ipservice bundle
 
 1. Log into the _Red Hat Fuse 7 Standalone Apache Karaf_ console
-2. Enter the following command lines to deploy the **[restful-ipservice](../restful-ipservice)** bundle
+2. Enter the following command lines to deploy the **[restful-ipservice](../restful-ipservice/src/main/resources/features.xml)** feature
 ```
 feature:repo-add mvn:org.jeannyil.fuse.cxfrs.ipservice/restful-ipservice/1.0.0-SNAPSHOT/xml/features
 feature:install restful-ipservice
