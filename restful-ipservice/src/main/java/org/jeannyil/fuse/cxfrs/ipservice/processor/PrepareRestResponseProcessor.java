@@ -9,15 +9,16 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.jeannyil.fuse.cxfrs.ipservice.constants.ErrorTypesEnum;
 import org.jeannyil.fuse.cxfrs.ipservice.constants.GeoLocationParametersEnum;
+import org.jeannyil.fuse.cxfrs.ipservice.constants.UtilHeadersEnum;
 
 public class PrepareRestResponseProcessor  implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		Message message = exchange.getIn();
-        Response response = convertToJaxRs(message, 
-        									  exchange.getProperty(GeoLocationParametersEnum.TYPE.toString(), String.class),
-        									  exchange.getProperty("errorType", String.class));
+        Response response = convertToJaxRs(message,
+                exchange.getProperty(GeoLocationParametersEnum.TYPE.toString(), String.class),
+                exchange.getProperty(UtilHeadersEnum.ERRORTYPE.toString(), String.class));
         exchange.getIn().setBody(response);
 	}
 

@@ -17,7 +17,7 @@ public class RestfulServiceMainRoute extends RouteBuilder {
 				.logStackTrace(true)
 				.logExhausted(true)
 				.logHandled(true)
-				.setProperty(UtilHeadersEnum.ERRORTYPE.toString(), constant(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
+				.setProperty(UtilHeadersEnum.ERRORTYPE.toString(), simple(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
 				// Set the exception message and build the ErrorBean
 				.transform().simple("${exception.message}")
 				.process("buildErrorBeanProcessor")
@@ -38,6 +38,7 @@ public class RestfulServiceMainRoute extends RouteBuilder {
 				.log(LoggingLevel.INFO, "Received RESTful request - Headers: ${headers} \n body: ${body}")
 				// Call operation dynamically
 				.toD("direct:${header.operationName}")
+				.log(LoggingLevel.INFO, "The exchange: ${exchange}")
 				// Prepare successful RESTful response
 				.process("prepareRestResponseProcessor")
                 // Collect counter metrics on successfully processed exchanges

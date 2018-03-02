@@ -1,4 +1,4 @@
-package org.jeannyil.fuse.cxfrs.metrics.constants;
+package org.jeannyil.fuse.cxfrs.ipservice.constants;
 
 public enum UtilHeadersEnum {
 	ERRORTYPE("errorType");

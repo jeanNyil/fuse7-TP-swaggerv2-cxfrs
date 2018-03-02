@@ -4,6 +4,7 @@ import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.jeannyil.fuse.cxfrs.metrics.constants.ErrorTypesEnum;
+import org.jeannyil.fuse.cxfrs.metrics.constants.UtilHeadersEnum;
 import org.jeannyil.fuse.cxfrs.metrics.exceptions.InputParameterValidationException;
 
 public class RestfulServiceGenerateNumbersRoute extends RouteBuilder {
@@ -18,12 +19,14 @@ public class RestfulServiceGenerateNumbersRoute extends RouteBuilder {
                 .logExhausted(true)
                 .logHandled(true)
                 .doTry()
-                .setProperty("errorType", constant(ErrorTypesEnum.VALIDATION_ERROR.toString()))
+                .setProperty(UtilHeadersEnum.ERRORTYPE.toString(), simple(ErrorTypesEnum.VALIDATION_ERROR.toString()))
                 // Set the exception message and build the ErrorBean
                 .transform().simple("${exception.message}")
                 .process("buildErrorBeanProcessor")
                 // Transform the ErrorBean message to JSON format
                 .marshal().json(JsonLibrary.Jackson, true)
+                // Prepare a validation exception RESTful response to caller
+                .process("prepareRestResponseProcessor")
                 // Collect counter metrics on requests that failed validation
                 .toD("metrics:counter:${routeId}.validation-ko");
         onException(Exception.class)
@@ -31,14 +34,17 @@ public class RestfulServiceGenerateNumbersRoute extends RouteBuilder {
                 .logStackTrace(true)
                 .logExhausted(true)
                 .logHandled(true)
-                .setProperty("errorType", constant(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
+                .setProperty(UtilHeadersEnum.ERRORTYPE.toString(), simple(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
                 // Set the exception message and build the ErrorBean
                 .transform().simple("${exception.message}")
                 .process("buildErrorBeanProcessor")
                 // Transform the ErrorBean message to JSON format
                 .marshal().json(JsonLibrary.Jackson, true)
+                // Prepare an exception RESTful response to caller
+                .process("prepareRestResponseProcessor")
                 // Collect counter metrics on requests that failed for all other reasons
                 .toD("metrics:counter:${routeId}.other-ko");
+
 
         /**
          *  Route that implements the GenerateNumbers REST service operation.

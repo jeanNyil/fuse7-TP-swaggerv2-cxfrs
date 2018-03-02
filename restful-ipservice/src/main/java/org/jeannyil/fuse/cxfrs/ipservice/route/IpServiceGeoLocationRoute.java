@@ -5,6 +5,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.jeannyil.fuse.cxfrs.ipservice.constants.ErrorTypesEnum;
 import org.jeannyil.fuse.cxfrs.ipservice.constants.GeoLocationParametersEnum;
+import org.jeannyil.fuse.cxfrs.ipservice.constants.UtilHeadersEnum;
 import org.jeannyil.fuse.cxfrs.ipservice.exception.TypeValidationException;
 
 public class IpServiceGeoLocationRoute extends RouteBuilder {
@@ -19,23 +20,27 @@ public class IpServiceGeoLocationRoute extends RouteBuilder {
                 .logExhausted(true)
                 .logHandled(true)
                 .doTry()
-                .setProperty("errorType", constant(ErrorTypesEnum.VALIDATION_ERROR.toString()))
+                .setProperty(UtilHeadersEnum.ERRORTYPE.toString(), constant(ErrorTypesEnum.VALIDATION_ERROR.toString()))
                 // Set the exception message and build the ErrorBean
                 .transform().simple("${exception.message}")
                 .process("buildErrorBeanProcessor")
                 // Transform the ErrorBean message to JSON format
-                .marshal().json(JsonLibrary.Jackson, true);
+                .marshal().json(JsonLibrary.Jackson, true)
+                // Prepare and send an validation exception RESTful response to caller
+                .process("prepareRestResponseProcessor");
         onException(Exception.class)
                 .handled(true) // Suppressing exception rethrow to the caller
                 .logStackTrace(true)
                 .logExhausted(true)
                 .logHandled(true)
-                .setProperty("errorType", constant(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
+                .setProperty(UtilHeadersEnum.ERRORTYPE.toString(), constant(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
                 // Set the exception message and build the ErrorBean
                 .transform().simple("${exception.message}")
                 .process("buildErrorBeanProcessor")
                 // Transform the ErrorBean message to JSON format
-                .marshal().json(JsonLibrary.Jackson, true);
+                .marshal().json(JsonLibrary.Jackson, true)
+                // Prepare and send an exception RESTful response to caller
+                .process("prepareRestResponseProcessor");
 
         /**
          *  Route that implements the getGeoLocation REST service operation.

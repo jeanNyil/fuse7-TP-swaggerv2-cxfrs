@@ -4,6 +4,7 @@ import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.jeannyil.fuse.cxfrs.ipservice.constants.ErrorTypesEnum;
+import org.jeannyil.fuse.cxfrs.ipservice.constants.UtilHeadersEnum;
 
 public class IpServiceCxfRsServerMainRoute extends RouteBuilder {
 
@@ -16,7 +17,7 @@ public class IpServiceCxfRsServerMainRoute extends RouteBuilder {
 				.logStackTrace(true)
 				.logExhausted(true)
 				.logHandled(true)
-				.setProperty("errorType", constant(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
+				.setProperty(UtilHeadersEnum.ERRORTYPE.toString(), constant(ErrorTypesEnum.ALLOTHER_ERROR.toString()))
 				// Set the exception message and build the ErrorBean
 				.transform().simple("${exception.message}")
 				.process("buildErrorBeanProcessor")
@@ -32,12 +33,12 @@ public class IpServiceCxfRsServerMainRoute extends RouteBuilder {
 		 *  instance before being transformed into a RESTful (JAX-RS) response through a camel processor.
 		 */
 		from("cxfrs:bean:ipRsService?bindingStyle=SimpleConsumer")
-			.routeId("{{camel.name.route}}-main")
-			.streamCaching() // Enable stream-caching
-			.log(LoggingLevel.INFO, "Received RESTful request - Headers: ${headers} \n body: ${body}")
-			.recipientList(simple("direct:${header.operationName}"))
-			// Prepare successful RESTful response
-			.process("prepareRestResponseProcessor");
+				.routeId("{{camel.name.route}}-main")
+				.streamCaching() // Enable stream-caching
+				.log(LoggingLevel.INFO, "Received RESTful request - Headers: ${headers} \n body: ${body}")
+				.recipientList(simple("direct:${header.operationName}"))
+				// Prepare successful RESTful response
+				.process("prepareRestResponseProcessor");
 	}
 
 }
