@@ -36,3 +36,6 @@ to be adjusted according to your environment for a consistent swagger 2.0 spec g
 
 ### Metrics in JConsole and Fuse 7 Apache Karaf 4 console
 ![Metrics](images/JConsole_and_ApacheKaraf4console.png)
+
+### Fuse 7 HawtIO Management Console
+![HawtIO](images/Fuse7HawtIOv2.png)
